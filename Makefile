@@ -19,6 +19,9 @@ test-all: test-ci ## Run all available tests
 build-release: ## Check build in release mode
 	@cargo build --release
 
+snarkify:
+	@cargo build --release --bin snarkify
+
 fmt: ## Check whether the code is formatted correctly
 	@cargo fmt --all -- --check
 
