@@ -22,3 +22,7 @@ ssh to gpu-5
 4. Follow the printed instruction to check if the deployment is done, it should show {your_tag} if it is successful
 5. `snarkify task create --file chunk_req.json` to create a new proof task
 6. you should get a {task_id} if the task is created, then use `snarkify task log {task_id}` to stream the logs
+
+## Run a batch or bundle proof
+if you would like to run a batch or bundle proof, use the `run_real_batch.sh` or `run_real_bundle.sh` instead.
+
