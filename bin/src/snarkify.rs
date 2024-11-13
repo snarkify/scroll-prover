@@ -2,7 +2,8 @@ use async_trait::async_trait;
 use itertools::Itertools;
 use prover::{
     aggregator::Prover as BatchProver, config::AGG_DEGREES, zkevm::Prover as ChunkProver,
-    BatchProof, BatchProvingTask, BlockTrace, ChunkProof, ChunkProvingTask,
+    BatchProof, BatchProvingTask, BlockTrace, BundleProof, BundleProvingTask, ChunkProof,
+    ChunkProvingTask,
 };
 use serde::{Deserialize, Serialize};
 use snarkify_sdk::prover::ProofHandler;
@@ -80,6 +81,7 @@ pub struct ProveRequest {
 enum Proof {
     Chunk(ChunkProof),
     Batch(BatchProof),
+    Bundle(BundleProof),
 }
 
 struct MyProofHandler;
@@ -112,7 +114,13 @@ impl ProofHandler for MyProofHandler {
                 Ok(Proof::Batch(proof))
             }
             CircuitType::BUNDLE => {
-                panic!("Bundle proof generation not implemented yet");
+                let task_data: BundleProvingTask =
+                    serde_json::from_str(req.task_data.as_str()).map_err(|e| e.to_string())?;
+                let mut prover = get_batch_prover().lock().unwrap();
+                let proof = prover
+                    .gen_bundle_proof(task_data, None, None)
+                    .map_err(|e| e.to_string())?;
+                Ok(Proof::Bundle(proof))
             }
         }
     }
