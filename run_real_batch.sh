@@ -1,0 +1,1 @@
+curl --location --request POST -d @batch_req.json 'http://localhost:8080' --header 'Content-Type: application/json' --header 'ce-specversion: 1.0' --header 'ce-id: abcdef123456' --header 'ce-source: test' --header 'ce-type: com.test.example'
